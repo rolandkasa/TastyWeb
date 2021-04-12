@@ -1,0 +1,29 @@
+.main-logo svg{
+    position: absolute;
+    top: -45px;
+}
+
+.fixed-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    background-color: rgb(145 163 128);
+}
+
+.shopping-cart {
+    float: right;
+    margin-right: 3vw;
+    margin-top: 1vh;
+}
+
+.shopping-cart svg{
+    margin: -4px;
+}
+
+.cart-count{
+    font-size: 30px;
+    margin-left: 5px;
+    color: #e31836;
+}
