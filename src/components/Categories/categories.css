@@ -1,0 +1,7 @@
+.category-container{
+    margin-top: 2vh;
+    width: 80vw;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    overflow-y: hidden;
+}
