@@ -1,38 +1,23 @@
-.App {
-  text-align: center;
+@font-face {
+  font-family: 'BRDCL';
+  src: local('BRDCL'), url(./assets/fonts/Zetafonts\ -\ Blacker\ Pro\ Text\ Condensed\ Medium\ Italic.otf) format('otf');
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container-main {
+  overflow-y: hidden;
+  background-color: #e8e8e8;
+  font-family: BRDCL;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.top-image{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url('https://images.unsplash.com/photo-1581873372796-635b67ca2008?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+  height: 30vw;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.blur {
+  box-shadow: 0px 0px 20px 20px rgba(255,255,255,1);
+  text-shadow: 0px 0px 10px rgba(51, 51, 51, 0.9);
+  opacity: 0.2;
 }
