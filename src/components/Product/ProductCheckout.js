@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './product.css'
-import { MdAddCircleOutline } from 'react-icons/md';
 
 export default function ProductCheckout({ product, addItemsToCart }) {
     const [productInfo, setProductInfo] = useState([])

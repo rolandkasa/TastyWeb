@@ -3,7 +3,7 @@ import './modal.css'
 import ProductCheckout from '../Product/ProductCheckout'
 import { MdClose } from 'react-icons/md';
 
-export default function Modal({ itemsInCart ,setModalOpen}) {
+export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
     const getTotal = () => {
         let total = 0;
 
@@ -12,6 +12,11 @@ export default function Modal({ itemsInCart ,setModalOpen}) {
         })
 
         return total
+    }
+
+    const submitCheckout = () => {
+        // TODO: make the api call, and handle the response
+        // The response has to be resolved by using the setMyOrder method
     }
 
     return (<div className="modal">
@@ -25,7 +30,7 @@ export default function Modal({ itemsInCart ,setModalOpen}) {
             Total: <span className="total-sum">{getTotal()} RON</span>
         </div>
         <div className="modal-footer">
-            <button type="button" className="modal-button">Confirm Order</button>
+            <button type="button" onClick={submitCheckout} className="modal-button">Confirm Order</button>
         </div>
     </div>)
 }
