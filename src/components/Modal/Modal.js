@@ -16,7 +16,9 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
 
     const submitCheckout = () => {
         // TODO: make the api call, and handle the response
-        // The response has to be resolved by using the setMyOrder method
+        // Create the Body of the POST request based on the `itemsInCart` variable
+        // The request URL is /api/Orders
+        // The response has to be saved in the state by using the setMyOrder method
     }
 
     return (<div className="modal">
