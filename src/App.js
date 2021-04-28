@@ -28,9 +28,9 @@ function App() {
     <div className="App">
       <Header itemsInCart={itemsInCart} setModalOpen={setModalOpen}/>
       {isModalOpen ? <Modal itemsInCart={itemsInCart} setModalOpen={setModalOpen} setMyOrder={setMyorders}/> : ""}
-      {myOrders.length && <div className="my-orders">
+      {myOrders.length ? <div className="my-orders">
         TODO: Once you have the orders, you can list it over here, and check for it's status every 10 seconds
-      </div>}
+      </div> : ""}
       <div className={`container-main ${isModalOpen ? 'blur' : ''}`}>
           <div className="top-image"></div>
           <Categories addItemsToCart={addItemsToCart}/>
