@@ -5,7 +5,7 @@ export default function ProductCheckout({ product, addItemsToCart }) {
     const [productInfo, setProductInfo] = useState([])
     async function fetchData() {
         try {
-            const data = await fetch(`http://localhost:8080/api/Products/${product.productId}`)
+            const data = await fetch(`http://localhost:56782/api/Products/${product.productId}`)
             setProductInfo(await data.json());
         } catch (err) {
             console.log(err)
@@ -16,7 +16,7 @@ export default function ProductCheckout({ product, addItemsToCart }) {
     }, [])
 
     return (<div className="product-card product-card-checkout ">
-        <img className="product-image" src={productInfo.imageUrl} />
+        <img className="product-image" src={productInfo.imageUrl} alt="Unavailable" />
         <div className="product-info">
             <span className="product-name">{productInfo.name}</span>
             <span>({productInfo.weight} g)</span>
