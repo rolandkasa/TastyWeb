@@ -3,7 +3,7 @@ import './modal.css'
 import ProductCheckout from '../Product/ProductCheckout'
 import { MdClose } from 'react-icons/md';
 
-export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
+export default function Modal({ itemsInCart, setModalOpen, setMyOrder}) {
     const getTotal = () => {
         let total = 0;
 
@@ -15,10 +15,34 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
     }
 
     const submitCheckout = () => {
-        // TODO: make the api call, and handle the response
-        // Create the Body of the POST request based on the `itemsInCart` variable
-        // The request URL is /api/Orders
-        // The response has to be saved in the state by using the setMyOrder method
+        var productIds = [];
+        var quantities = [];
+        var n = 0;
+
+        itemsInCart.forEach(item => {
+            productIds[n] = item.product.productId;
+            n++;
+        })
+        n = 0;
+        itemsInCart.forEach(item => {
+            quantities[n] = item.count;
+            n++;
+        })
+
+        fetch("http://localhost:7520/api/Orders",{
+            method:"POST",
+            body:JSON.stringify({
+                productId: productIds,
+                quantity: quantities,
+                observations: ""
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then(response => setMyOrder(response));
+
+        setModalOpen(false);
     }
 
     return (<div className="modal">
