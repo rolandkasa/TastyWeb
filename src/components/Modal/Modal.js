@@ -13,12 +13,33 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
 
         return total
     }
+    const convertToJson =() => {
+        const orderItems = []
+        itemsInCart.forEach(item => {
+            const map = {productId: item.product.productId, quantity: item.count}
+            orderItems.push(map)
+        })
 
+        return {orderItems:orderItems, obeservations:""}
+    }
+    async function fetchData (request){
+        try{
+            await fetch(`https://localhost:44309/api/Orders`, request)
+                .then(response => setMyorders = response)
+            console.log(setMyorders)
+        }catch(err){
+            console.log(err)
+        }
+    }
     const submitCheckout = () => {
-        // TODO: make the api call, and handle the response
-        // Create the Body of the POST request based on the `itemsInCart` variable
-        // The request URL is /api/Orders
-        // The response has to be saved in the state by using the setMyOrder method
+        const data = convertToJson()
+        const request = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body:JSON.stringify(data)
+        }
+        fetchData(request)
+        setModalOpen(false)
     }
 
     return (<div className="modal">
