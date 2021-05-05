@@ -3,17 +3,17 @@ import './modal.css'
 import ProductCheckout from '../Product/ProductCheckout'
 import { MdClose } from 'react-icons/md';
 
-export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
+export default function Modal({ itemsInCart, setModalOpen, setMyOrder}) {
     const getTotal = () => {
         let total = 0;
 
         itemsInCart.forEach(item => {
             total += item.product.price * item.count
-        })
+        }) 
 
         return total
     }
-    const convertToJson =() => {
+    const convertToJson =() =>{
         const orderItems = []
         itemsInCart.forEach(item => {
             const map = {productId: item.product.productId, quantity: item.count}
@@ -24,9 +24,9 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
     }
     async function fetchData (request){
         try{
-            await fetch(`https://localhost:44309/api/Orders`, request)
-                .then(response => setMyorders = response)
-            console.log(setMyorders)
+            const data = await fetch(`https://localhost:44309/api/Orders`, request)
+            const order = await data.json()
+            setMyOrder(order)
         }catch(err){
             console.log(err)
         }
