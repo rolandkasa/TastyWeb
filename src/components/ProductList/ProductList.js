@@ -6,7 +6,7 @@ export default function ProductList({ productCategory, addItemsToCart }) {
     const [productList, setProductList] = useState([])
     async function fetchData() {
         try {
-            const data = await fetch(`http://localhost:8080/api/Products/${productCategory.categoryId}/1/20`)
+            const data = await fetch(`https://localhost:44309/api/Products/${productCategory.categoryId}/1/20`)
             setProductList(await data.json());
         } catch (err) {
             console.log(err)

@@ -3,7 +3,43 @@ import './modal.css'
 import ProductCheckout from '../Product/ProductCheckout'
 import { MdClose } from 'react-icons/md';
 
-export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
+export default function Modal({ itemsInCart ,setModalOpen, setMyOrder, setMyStatus}) {
+
+    function getItemData(item){
+        return { productId: item.product.productId, quantity: item.count}
+    }
+
+    const getOrder = () => {
+        var items = itemsInCart.map(getItemData);
+        return {orderItems: items, observations: ""}
+    }
+
+    /*async function getStatus(orderStatus){
+        try{
+            var status = await fetch(`https://localhost:44309/api/Orders/${orderStatus.orderId}`);
+        }catch(err){
+            console.log(err)
+        }
+    }*/
+
+    async function sendOrder(order) {
+        try{
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(order)
+            };
+            const response = await fetch('https://localhost:44309/api/Orders', requestOptions);
+
+            if( response.status === 201 ){
+                console.log("order placed")
+                console.log(await response.json())
+            }
+        }catch(err){
+            console.log(err)
+        }
+    }
+
     const getTotal = () => {
         let total = 0;
 
@@ -15,10 +51,10 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
     }
 
     const submitCheckout = () => {
-        // TODO: make the api call, and handle the response
-        // Create the Body of the POST request based on the `itemsInCart` variable
-        // The request URL is /api/Orders
-        // The response has to be saved in the state by using the setMyOrder method
+        const order = getOrder();
+        console.log(order)
+        sendOrder(order)
+        setMyOrder(order)
     }
 
     return (<div className="modal">
