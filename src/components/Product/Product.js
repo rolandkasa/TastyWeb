@@ -6,7 +6,7 @@ export default function Product({ product, addItemsToCart }) {
     const [productInfo, setProductInfo] = useState([])
     async function fetchData() {
         try {
-            const data = await fetch(`https://localhost:44324/api/Products/${product.productId}`)
+            const data = await fetch(`https://localhost:44325/api/Products/${product.productId}`)
             setProductInfo(await data.json());
         } catch (err) {
             console.log(err)
