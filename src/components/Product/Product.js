@@ -6,7 +6,7 @@ export default function Product({ product, addItemsToCart }) {
     const [productInfo, setProductInfo] = useState([])
     async function fetchData() {
         try {
-            const data = await fetch(`http://localhost:8080/api/Products/${product.productId}`)
+            const data = await fetch(`https://localhost:44325/api/Products/${product.productId}`)
             setProductInfo(await data.json());
         } catch (err) {
             console.log(err)
@@ -28,6 +28,6 @@ export default function Product({ product, addItemsToCart }) {
             <span className="product-price">{productInfo.price} RON</span>
             <p className="product-description">{productInfo.description}</p>
         </div>
-        <button className="product-add" onClick={onAdd}><MdAddCircleOutline size={26} color="#FFF"/></button>
+        <button className="product-add" onClick={onAdd}><MdAddCircleOutline size={26} color="#FFF" /></button>
     </div >)
 }
