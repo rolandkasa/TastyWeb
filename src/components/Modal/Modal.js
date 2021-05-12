@@ -3,10 +3,9 @@ import './modal.css'
 import ProductCheckout from '../Product/ProductCheckout'
 import { MdClose } from 'react-icons/md';
 
-export default function Modal({ itemsInCart, setModalOpen, setMyOrder }) {
+export default function Modal({ itemsInCart, setModalOpen, setMyOrder, addItemsToCart, removeItemsFromCart }) {
     const getTotal = () => {
         let total = 0;
-
         itemsInCart.forEach(item => {
             total += item.product.price * item.count
         })
@@ -16,7 +15,7 @@ export default function Modal({ itemsInCart, setModalOpen, setMyOrder }) {
 
     async function fetchData(requestOptions) {
         try {
-            const data = await fetch('https://localhost:44324/api/Orders', requestOptions)
+            const data = await fetch('https://localhost:44325/api/Orders', requestOptions)
             const order = await data.json()
             setMyOrder(order)
         } catch (err) {
@@ -29,11 +28,10 @@ export default function Modal({ itemsInCart, setModalOpen, setMyOrder }) {
         // Create the Body of the POST request based on the `itemsInCart` variable
         // The request URL is /api/Orders
         // The response has to be saved in the state by using the setMyOrder method
-
         const cart = itemsInCart.map(item => ({ productId: item.product.productId, quantity: item.count }))
         const order = {
             orderItems: JSON.stringify(cart),
-            observations: ""
+            observations: "string"
         }
 
         const requestOptions = {
@@ -50,7 +48,7 @@ export default function Modal({ itemsInCart, setModalOpen, setMyOrder }) {
         <div className="modal-title"><h2>Checkout</h2><MdClose size={32} onClick={() => setModalOpen(false)} /></div>
         <div className="modal-inner">
             {itemsInCart.map((item) => {
-                return <div><span className="item-count">{item.count}x</span><ProductCheckout product={item.product} /></div>
+                return <div><span className="item-count">{item.count}x</span><ProductCheckout product={item.product} count={item.count} addItemsToCart={addItemsToCart} removeItemsFromCart={removeItemsFromCart} /></div>
             })}
         </div>
         <div className="total">
