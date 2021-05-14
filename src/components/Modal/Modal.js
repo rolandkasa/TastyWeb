@@ -46,7 +46,7 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyOrder}) {
 
         var cartOrder = {
             orderItems: JSON.stringify(cartItems),
-            observations: 
+            observations: ""
         }
         
         fetchData(cartOrder)
