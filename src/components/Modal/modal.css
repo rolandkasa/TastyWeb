@@ -17,7 +17,7 @@
 
 .modal-inner{
     padding: 0px 20px;
-    height:56vh;
+    height:44vh;
     overflow-y: scroll;
 }
 
@@ -65,4 +65,13 @@
 .total-sum{
     float: right;
     margin-right: 3vw;
+}
+
+.observations-input{
+    width: 90%;
+    height: 50px;
+}
+
+.observations-area{
+    text-align: center;
 }
