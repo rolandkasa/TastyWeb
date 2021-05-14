@@ -1,13 +1,16 @@
 import './App.css';
-import {useState} from 'react'
+import {useState, useEffect, createContext} from 'react'
 import Header from './components/Header/Header'
 import Categories from './components/Categories/Categories'
 import Modal from './components/Modal/Modal'
+
+export const OrderContext = createContext(false);
 
 function App() {
   const [itemsInCart, setItemsInCart] = useState([])
   const [isModalOpen, setModalOpen] = useState(false)
   const [myOrders, setMyorders] = useState([])
+
 
   const addItemsToCart = (item) => {
     const itemAlreadyInCart = itemsInCart.find((it) => it.product.name === item.name)
@@ -35,6 +38,9 @@ function App() {
       <div className={`container-main ${isModalOpen ? 'blur' : ''}`}>
           <div className="top-image"></div>
           <Categories addItemsToCart={addItemsToCart}/>
+          <OrderContext.Provider value={myOrders}>
+          <Categories addItemsToCart={addItemsToCart}/>
+            </OrderContext.Provider>
       </div>
     </div>
   );

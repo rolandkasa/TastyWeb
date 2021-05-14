@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { } from 'react';
 import './modal.css'
 import ProductCheckout from '../Product/ProductCheckout'
 import { MdClose } from 'react-icons/md';
@@ -14,28 +14,22 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyOrder}) {
         return total
     }
 
-    const submitCheckout = async () => {
-
-        var productIdList = [];
-        var n = 0;
-
-        itemsInCart.forEach(item => {
-            productIdList[n] = item.product.productId;
-            n++;
-        })
-
-        fetch("http://localhost:56782/api/Orders",{
+    async function postOrder(_myOrder){
+        const response = await fetch("http://localhost:56782/api/Orders",{
             method:"POST",
-            body:JSON.stringify({
-                productId: productIdList
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        .then(response => setMyOrder(response));
+            headers: {'Content-Type': 'application/json' },
+            body: JSON.stringify(_myOrder)});
+            const data = await response.json()
+            setMyOrder(data);
+    }
 
-        setModalOpen(false);
+    const submitCheckout = async () => {
+        const _myOrder = {
+            orderitems: itemsInCart.map(item => ({productId: item.product.productId, quantity:item.count})),
+            observations: "-"
+        }
+    postOrder(_myOrder)
+    setModalOpen(false);
     }
 
     return (<div className="modal">
