@@ -4,6 +4,7 @@ import ProductCheckout from '../Product/ProductCheckout'
 import { MdClose } from 'react-icons/md';
 
 export default function Modal({ itemsInCart ,setModalOpen, setMyOrder, setMyStatus}) {
+    const [observations, setObservations] = useState("")
 
     function getItemData(item){
         return { productId: item.product.productId, quantity: item.count}
@@ -11,7 +12,7 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyOrder, setMyStat
 
     const getOrder = () => {
         var items = itemsInCart.map(getItemData);
-        return {orderItems: items, observations: ""}
+        return {orderItems: items, observations: observations}
     }
 
     /*async function getStatus(orderStatus){
@@ -21,6 +22,10 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyOrder, setMyStat
             console.log(err)
         }
     }*/
+
+    const handleObservationChange = (e) => {
+        setObservations(e.target.value)
+    }
 
     async function sendOrder(order) {
         try{
@@ -66,6 +71,9 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyOrder, setMyStat
         </div>
         <div className="total">
             Total: <span className="total-sum">{getTotal()} RON</span>
+        </div>
+        <div className="order-observations">
+            <textarea className="observations-text-entry" placeholder="Observations..." onChange={handleObservationChange}/>
         </div>
         <div className="modal-footer">
             <button type="button" onClick={submitCheckout} className="modal-button">Confirm Order</button>
