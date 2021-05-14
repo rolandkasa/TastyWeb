@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './modal.css'
 import ProductCheckout from '../Product/ProductCheckout'
 import { MdClose } from 'react-icons/md';
+import Popup from '../Popup/Popup';
 
-export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
+export default function Modal({ itemsInCart, setModalOpen, setMyorder}) {
+    const [isPopUpOpen, setPopupOpen] = useState(false);
     const getTotal = () => {
         let total = 0;
 
@@ -13,12 +15,27 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
 
         return total
     }
+    async function postOrder(requestOptions) {
+        const response = await fetch('http://localhost:7520/api/Orders', requestOptions);
+        const data = await response.json()
+        setMyorder(data)
+    }
 
     const submitCheckout = () => {
-        // TODO: make the api call, and handle the response
-        // Create the Body of the POST request based on the `itemsInCart` variable
-        // The request URL is /api/Orders
-        // The response has to be saved in the state by using the setMyOrder method
+        const order = {
+            orderItems: itemsInCart.map(item => ({productId: item.product.productId, quantity: item.count})),
+            observations: "none"
+        } 
+
+        const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(order)
+        };
+
+        if (order.orderItems.length == 0) return;
+        postOrder(requestOptions)
+        setPopupOpen(true);
     }
 
     return (<div className="modal">
@@ -34,5 +51,8 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyorders}) {
         <div className="modal-footer">
             <button type="button" onClick={submitCheckout} className="modal-button">Confirm Order</button>
         </div>
+        <Popup trigger={isPopUpOpen} setTrigger={setPopupOpen}>
+            <h3 id="status-popup">My popup</h3>
+        </Popup>
     </div>)
 }

@@ -1,5 +1,5 @@
 import './App.css';
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import Header from './components/Header/Header'
 import Categories from './components/Categories/Categories'
 import Modal from './components/Modal/Modal'
@@ -7,7 +7,8 @@ import Modal from './components/Modal/Modal'
 function App() {
   const [itemsInCart, setItemsInCart] = useState([])
   const [isModalOpen, setModalOpen] = useState(false)
-  const [myOrders, setMyorders] = useState([])
+  const [myOrder, setMyorder] = useState([])
+  const [orderStatus, setOrderStatus] = useState({})
 
   const addItemsToCart = (item) => {
     const itemAlreadyInCart = itemsInCart.find((it) => it.product.name === item.name)
@@ -24,11 +25,32 @@ function App() {
     }
   }
 
+  async function getOrderStatus(orderId){
+    try{
+      const data =  await fetch(`http://localhost:7520/api/Orders/${orderId}`)
+      const _orderStatus = await data.text()
+      setOrderStatus(_orderStatus);
+      document.getElementById("status-popup").innerHTML=_orderStatus
+      return _orderStatus
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  useEffect(()=>{
+    (async function getStatus(){
+      if(!myOrder.orderId){
+        return 
+      }
+      await getOrderStatus(myOrder.orderId) == "Delivered" ? setTimeout(()=>setMyorder({}),10000) : setTimeout(getStatus, 1000);
+    })()
+  },[myOrder])
+
   return (
     <div className="App">
       <Header itemsInCart={itemsInCart} setModalOpen={setModalOpen}/>
-      {isModalOpen ? <Modal itemsInCart={itemsInCart} setModalOpen={setModalOpen} setMyOrder={setMyorders}/> : ""}
-      {myOrders.length ? <div className="my-orders">
+      {isModalOpen ? <Modal itemsInCart={itemsInCart} setModalOpen={setModalOpen} setMyorder={setMyorder}/> : ""}
+      {myOrder.length ? <div className="my-orders">
         TODO: Once you have the orders, you can list it over here, and check for it's status every 10 seconds, 
         until the status is "Done"
       </div> : ""}
