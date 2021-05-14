@@ -5,7 +5,7 @@ import { MdClose } from 'react-icons/md';
 
 export default function Modal({ itemsInCart ,setModalOpen, setMyOrder}) {
 
-    
+    const [observations, setObservations] = useState("")
 
     const getTotal = () => {
         let total = 0;
@@ -15,6 +15,10 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyOrder}) {
         })
 
         return total
+    }
+
+    function handleObservationChange(e){
+        setObservations(e.target.value)
     }
     
 
@@ -46,7 +50,7 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyOrder}) {
 
         var cartOrder = {
             orderItems: JSON.stringify(cartItems),
-            observations: ""
+            observations: JSON.stringify(observations)
         }
         
         fetchData(cartOrder)
@@ -60,7 +64,9 @@ export default function Modal({ itemsInCart ,setModalOpen, setMyOrder}) {
                 return <div><span className="item-count">{item.count}x</span><ProductCheckout product={item.product} /></div>
             })}
         </div>
-        
+        <div className="observations-area">
+        <textarea className="observations-input" placeholder={"Add observations"} onChange={handleObservationChange}></textarea>
+        </div>
         <div className="total">
             Total: <span className="total-sum">{getTotal()} RON</span>
         </div>
