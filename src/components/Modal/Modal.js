@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './modal.css'
 import ProductCheckout from '../Product/ProductCheckout'
 import { MdClose } from 'react-icons/md';
+import Popup from '../Popup/Popup';
 
-export default function Modal({ itemsInCart, setModalOpen, setMyOrder}) {
+export default function Modal({ itemsInCart, setModalOpen, setMyorder}) {
+    const [isPopUpOpen, setPopupOpen] = useState(false);
     const getTotal = () => {
         let total = 0;
 
@@ -13,36 +15,27 @@ export default function Modal({ itemsInCart, setModalOpen, setMyOrder}) {
 
         return total
     }
+    async function postOrder(requestOptions) {
+        const response = await fetch('http://localhost:7520/api/Orders', requestOptions);
+        const data = await response.json()
+        setMyorder(data)
+    }
 
     const submitCheckout = () => {
-        var productIds = [];
-        var quantities = [];
-        var n = 0;
+        const order = {
+            orderItems: itemsInCart.map(item => ({productId: item.product.productId, quantity: item.count})),
+            observations: "none"
+        } 
 
-        itemsInCart.forEach(item => {
-            productIds[n] = item.product.productId;
-            n++;
-        })
-        n = 0;
-        itemsInCart.forEach(item => {
-            quantities[n] = item.count;
-            n++;
-        })
+        const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(order)
+        };
 
-        fetch("http://localhost:7520/api/Orders",{
-            method:"POST",
-            body:JSON.stringify({
-                productId: productIds,
-                quantity: quantities,
-                observations: ""
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        .then(response => setMyOrder(response));
-
-        setModalOpen(false);
+        if (order.orderItems.length == 0) return;
+        postOrder(requestOptions)
+        setPopupOpen(true);
     }
 
     return (<div className="modal">
@@ -58,5 +51,8 @@ export default function Modal({ itemsInCart, setModalOpen, setMyOrder}) {
         <div className="modal-footer">
             <button type="button" onClick={submitCheckout} className="modal-button">Confirm Order</button>
         </div>
+        <Popup trigger={isPopUpOpen} setTrigger={setPopupOpen}>
+            <h3 id="status-popup">My popup</h3>
+        </Popup>
     </div>)
 }
