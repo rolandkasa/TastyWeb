@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './modal.css'
 import ProductCheckout from '../Product/ProductCheckout'
 import { MdClose } from 'react-icons/md';
-
+import { MdAddCircleOutline } from 'react-icons/md';
+import { MdRemoveCircleOutline } from 'react-icons/md';
 export default function Modal({ itemsInCart, setModalOpen, setMyOrder}) {
+    const [value,setValue] = useState();
     const getTotal = () => {
         let total = 0;
 
@@ -31,6 +33,26 @@ export default function Modal({ itemsInCart, setModalOpen, setMyOrder}) {
             console.log(err)
         }
     }
+    const handleRefresh = () =>{
+        setValue({});
+    }
+    const addItemsToCart = (item) =>{
+        ++item.count;
+        getTotal();
+        handleRefresh();
+    }
+    const removeItemsToCart = (item) =>{
+        if(item.count === 1){
+            var index=itemsInCart.indexOf(item)
+            if(index !== -1){
+                itemsInCart.splice(index,1);
+            }
+        }
+        --item.count;
+        getTotal();
+        handleRefresh();
+    }
+   
     const submitCheckout = () => {
         const data = convertToJson()
         const request = {
@@ -39,14 +61,16 @@ export default function Modal({ itemsInCart, setModalOpen, setMyOrder}) {
             body:JSON.stringify(data)
         }
         fetchData(request)
-        setModalOpen(false)
     }
 
     return (<div className="modal">
         <div className="modal-title"><h2>Checkout</h2><MdClose size={32} onClick={() => setModalOpen(false)}/></div>
         <div className="modal-inner">
             {itemsInCart.map((item) => {
-                return <div><span className="item-count">{item.count}x</span><ProductCheckout product={item.product} /></div>
+                return <div>
+                    <MdAddCircleOutline color='green' onClick={() => addItemsToCart(item)}/>
+                    <MdRemoveCircleOutline color='red' onClick={() => removeItemsToCart(item)}/>
+                    <span className="item-count">{item.count}x</span><ProductCheckout product={item.product} /></div>
             })}
         </div>
         <div className="total">
